@@ -83,6 +83,7 @@ export const useAuthStore = create((set, get) => ({
   },
 
   connectSocket: () => {
+    debugger
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
 
@@ -90,6 +91,10 @@ export const useAuthStore = create((set, get) => ({
       query: {
         userId: authUser._id,
       },
+      transports: ["websocket"],
+      reconnection: true,  // ✅ Enable auto-reconnect
+      reconnectionAttempts: 5,  // ✅ Retry 5 times before failing
+      reconnectionDelay: 1000
     });
     socket.connect();
 
